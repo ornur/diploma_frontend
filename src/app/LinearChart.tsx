@@ -38,11 +38,14 @@ export function LineGraph({
   header: string;
 }) {
   const [activeMonth, setActiveMonth] = useState(chartData[0].month);
-  const activeIndex = useMemo(
-    () => chartData.findIndex((item) => item.month === activeMonth),
-    [activeMonth]
+  // const activeIndex = useMemo(
+  //   () => chartData.findIndex((item) => item.month === activeMonth),
+  //   [activeMonth, chartData]
+  // );
+  const months = useMemo(
+    () => chartData.map((item) => item.month),
+    [chartData]
   );
-  const months = useMemo(() => chartData.map((item) => item.month), []);
 
   return (
     <Card className="w-full">
