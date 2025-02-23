@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { TrendingUp } from "lucide-react";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
   Card,
@@ -10,47 +10,81 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
+} from "@/components/ui/chart";
+import { useMemo, useState } from "react";
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig
+export function LineGraph({
+  chartData,
+  chartConfig,
+  header,
+}: {
+  chartData: { month: string; real: number; predicted: number }[];
+  chartConfig: ChartConfig;
+  header: string;
+}) {
+  const [activeMonth, setActiveMonth] = useState(chartData[0].month);
+  const activeIndex = useMemo(
+    () => chartData.findIndex((item) => item.month === activeMonth),
+    [activeMonth]
+  );
+  const months = useMemo(() => chartData.map((item) => item.month), []);
 
-export function LineGraph() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Line Chart - Linear</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
+    <Card className="w-full">
+      <CardHeader className="flex flex-row justify-between">
+        <div>
+          <CardTitle>{header}</CardTitle>
+          <CardDescription>January - June 2024</CardDescription>
+        </div>
+        <Select value={activeMonth} onValueChange={setActiveMonth}>
+          <SelectTrigger
+            className="rounded-md w-max flex items-center gap-3"
+            aria-label="Select a value"
           >
-            <CartesianGrid vertical={false} />
+            <SelectValue placeholder="Select month" />
+          </SelectTrigger>
+          <SelectContent align="end" className="rounded-xl">
+            {months.map((month, key) => {
+              return (
+                <SelectItem
+                  key={key}
+                  value={month}
+                  className="rounded-md [&_span]:flex"
+                >
+                  <div className="flex items-center gap-2 text-xs">
+                    <span
+                      className="flex h-3 w-3 shrink-0 rounded-sm"
+                      style={{
+                        backgroundColor: `var(--color-${key})`,
+                      }}
+                    />
+                    {month}
+                  </div>
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
+      </CardHeader>
+      <CardContent className="w-full">
+        <ChartContainer config={chartConfig}>
+          <LineChart accessibilityLayer data={chartData}>
+            <CartesianGrid vertical={true} />
             <XAxis
               dataKey="month"
               tickLine={false}
@@ -58,17 +92,33 @@ export function LineGraph() {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickCount={6}
+              domain={[0, 1]}
+              allowDataOverflow
+            />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
             <Line
-              dataKey="desktop"
+              dataKey="predicted"
               type="linear"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-predicted)"
               strokeWidth={2}
               dot={false}
             />
+            <Line
+              dataKey="real"
+              type="linear"
+              stroke="var(--color-real)"
+              strokeWidth={2}
+              dot={false}
+            />
+            <ChartLegend content={<ChartLegendContent />} />
           </LineChart>
         </ChartContainer>
       </CardContent>
@@ -81,5 +131,5 @@ export function LineGraph() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
