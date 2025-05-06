@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo, useState } from "react";
+
 import { TrendingUp } from "lucide-react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
@@ -26,7 +28,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useMemo, useState } from "react";
 
 export function LineGraph({
   chartData,
@@ -109,17 +110,17 @@ export function LineGraph({
             />
             <Line
               dataKey="predicted"
-              type="linear"
+              type="monotone"
               stroke="var(--color-predicted)"
               strokeWidth={2}
-              dot={false}
+              
             />
             <Line
               dataKey="real"
               type="linear"
               stroke="var(--color-real)"
               strokeWidth={2}
-              dot={false}
+              
             />
             <ChartLegend content={<ChartLegendContent />} />
           </LineChart>
