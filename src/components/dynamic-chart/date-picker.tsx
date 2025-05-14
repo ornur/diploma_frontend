@@ -237,6 +237,12 @@ export function SelectTimeButtons({
         Last 6 Hours
       </Button>
       <Button
+        variant="outline"
+        onClick={() => setDate({ end: now, start: subHours(now, 3) })}
+      >
+        Last 3 Hours
+      </Button>
+      <Button
         onClick={() =>
           setData(generateData(date.start, date.end, selectedSensor))
         }
