@@ -5,6 +5,8 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import { format, subHours } from "date-fns";
 import {
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -49,17 +51,13 @@ export function DynamicLineChart() {
         item[`${sensorId}_real`],
         item[`${sensorId}_predicted`],
       ])
-      .filter(Boolean);
+      .filter((value): value is number => typeof value === "number");
 
     if (values.length === 0) return [0, 100];
 
-    const min = Math.min(
-      ...values.filter((v): v is number => typeof v === "number")
-    );
-    const max = Math.max(
-      ...values.filter((v): v is number => typeof v === "number")
-    );
-    const padding = (max - min) * 0.1;
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const padding = (max - min) * 0.1 || 10;
 
     return [Math.floor(min - padding), Math.ceil(max + padding)];
   };
@@ -182,10 +180,6 @@ export function DynamicLineChart() {
                       })`,
                     ];
                   }}
-                  // labelFormatter={(label) => {
-                  //   const date = new Date(label);
-                  //   return format(date, "PPP HH:mm");
-                  // }}
                 />
               }
             />
@@ -207,6 +201,7 @@ export function DynamicLineChart() {
               strokeWidth={2}
               yAxisId={selectedSensor}
             />
+            <ChartLegend content={<ChartLegendContent />} />
           </LineChart>
         </ChartContainer>
       ) : (
@@ -216,25 +211,6 @@ export function DynamicLineChart() {
           </p>
         </div>
       )}
-
-      <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-        <div key={selectedSensor} className="flex items-center gap-4">
-          <div className="flex items-center">
-            <div
-              className="w-3 h-3 rounded-full mr-2"
-              style={{ backgroundColor: getSensorColor(selectedSensor, true) }}
-            ></div>
-            <span>{getSensorUnit(selectedSensor)} (Predicted)</span>
-          </div>
-          <div className="flex items-center">
-            <div
-              className="w-3 h-3 rounded-full mr-2"
-              style={{ backgroundColor: getSensorColor(selectedSensor, false) }}
-            ></div>
-            <span>{getSensorUnit(selectedSensor)}(Real)</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
