@@ -172,11 +172,7 @@ export function SensorPicker({
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {selectedSensor}
-            {/* ? `${selectedSensors.length} sensor${
-                  selectedSensors.length > 1 ? "s" : ""
-                } selected`
-              : "Select sensors..."} */}
+            {sensors.find((sensor) => sensor.id === selectedSensor)?.name}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -241,6 +237,12 @@ export function SelectTimeButtons({
         onClick={() => setDate({ end: now, start: subHours(now, 3) })}
       >
         Last 3 Hours
+      </Button>
+            <Button
+        variant="outline"
+        onClick={() => setDate({ end: now, start: subHours(now, 1) })}
+      >
+        Last 1 Hour
       </Button>
       <Button
         onClick={() =>
