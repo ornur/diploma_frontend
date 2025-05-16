@@ -8,15 +8,15 @@ export const generateData = (
   start: Date,
   end: Date,
   selectedSensor: string
-): { [key: string]: number | string }[] => {
-  const data = [];
+): { [key: string]: number | Date }[] => {
+  const data: { [key: string]: Date | number }[] = [];
   const timeRange = end.getTime() - start.getTime();
   const dataPoints = 30;
   const interval = timeRange / (dataPoints - 1);
 
   for (let i = 0; i < dataPoints; i++) {
     const timestamp = new Date(start.getTime() + i * interval);
-    const dataPoint: any = { timestamp };
+    const dataPoint: { [key: string]: Date | number } = { timestamp };
 
     let baseValue = 0;
     switch (selectedSensor) {
@@ -46,6 +46,5 @@ export const generateData = (
     );
     data.push(dataPoint);
   }
-
   return data;
 };

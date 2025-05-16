@@ -64,7 +64,7 @@ export function DynamicLineChart() {
 
   // Get chart config for selected sensors
   const getChartConfig = () => {
-    const config: Record<string, any> = {};
+    const config: Record<string, { label: string; color: string }> = {};
 
     const sensor = sensors.find((s) => s.id === selectedSensor);
     if (sensor) {
@@ -77,7 +77,6 @@ export function DynamicLineChart() {
         color: getSensorColor(selectedSensor, false),
       };
     }
-
     return config;
   };
 

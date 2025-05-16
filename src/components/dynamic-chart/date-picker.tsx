@@ -38,7 +38,7 @@ interface SensorPickerProps {
 interface SelectTimeButtonsProps extends DatePickerProps {
   now: Date;
   selectedSensor: string;
-  setData: React.Dispatch<React.SetStateAction<any[]>>;
+  setData: React.Dispatch<React.SetStateAction<{[key: string]: Date | number}[]>>;
 }
 
 export function StartDatePicker({ date, setDate }: DatePickerProps) {
