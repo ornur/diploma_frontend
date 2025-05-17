@@ -1,3 +1,4 @@
+import { Providers } from "@/providers/Providers";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -6,6 +7,7 @@ export const metadata: Metadata = {
   description: "ML Graph",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -13,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <Providers>
+        <body className="antialiased">{children}</body>
+      </Providers>
     </html>
   );
 }
