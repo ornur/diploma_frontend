@@ -71,7 +71,7 @@ export function DynamicLineChart() {
       />
       <SelectTimeButtons modelData={modelData} now={now} setDate={setDate} />
 
-      {!modelData.isPending ? (
+      {!modelData.isPending && modelData.isSuccess ? (
         <ChartContainer
           key={modelData.data?.sensorName}
           config={getChartConfig()}
@@ -146,7 +146,11 @@ export function DynamicLineChart() {
       ) : (
         <div className="flex items-center justify-center h-[400px] border rounded-lg bg-muted/20">
           <p className="text-muted-foreground">
-            Please select at least one sensor to display data
+            {modelData.isPending
+              ? "Loading..."
+              : modelData.isError
+              ? "Error loading data"
+              : "No data available"}
           </p>
         </div>
       )}
