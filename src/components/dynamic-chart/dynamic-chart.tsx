@@ -17,7 +17,7 @@ import {
 } from "./date-picker";
 
 export function DynamicLineChart() {
-  const { modelData, selectedSensor, date, now, setDate, setSelectedSensor } =
+  const { modelData, selectedSensor, date, setDate, setSelectedSensor } =
     useData();
   // Find min and max values for Y-axis for each sensor
   const getYAxisDomain = () => {
@@ -69,7 +69,7 @@ export function DynamicLineChart() {
         setSelectedSensor={setSelectedSensor}
         sensors={SENSOR_COLUMNS}
       />
-      <SelectTimeButtons modelData={modelData} now={now} setDate={setDate} />
+      <SelectTimeButtons modelData={modelData} date={date} setDate={setDate} />
 
       {modelData.isSuccess ? (
         <ChartContainer
