@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { format, subHours } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
-import { cn, generateData } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -26,22 +26,23 @@ import {
   CommandList,
 } from "@/components/ui/command";
 
-interface DatePickerProps {
-  date: { start: Date; end: Date };
-  setDate: React.Dispatch<React.SetStateAction<{ start: Date; end: Date }>>;
-}
 interface SensorPickerProps {
-  sensors: { id: string; name: string; unit: string }[];
+  readonly sensors: ReadonlyArray<{
+    readonly id: string;
+    readonly name: string;
+    readonly unit: string;
+  }>;
   selectedSensor: string;
   setSelectedSensor: React.Dispatch<React.SetStateAction<string>>;
 }
-interface SelectTimeButtonsProps extends DatePickerProps {
-  now: Date;
-  selectedSensor: string;
-  setData: React.Dispatch<React.SetStateAction<{[key: string]: Date | number}[]>>;
-}
 
-export function StartDatePicker({ date, setDate }: DatePickerProps) {
+export function StartDatePicker({
+  date,
+  setDate,
+}: {
+  date: { start: Date; end: Date };
+  setDate: React.Dispatch<React.SetStateAction<{ start: Date; end: Date }>>;
+}) {
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium">Start Date</label>
@@ -98,7 +99,13 @@ export function StartDatePicker({ date, setDate }: DatePickerProps) {
   );
 }
 
-export function EndDatePicker({ date, setDate }: DatePickerProps) {
+export function EndDatePicker({
+  date,
+  setDate,
+}: {
+  date: { start: Date; end: Date };
+  setDate: React.Dispatch<React.SetStateAction<{ start: Date; end: Date }>>;
+}) {
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium">End Date</label>
@@ -213,11 +220,15 @@ export function SensorPicker({
 
 export function SelectTimeButtons({
   now,
-  date,
-  selectedSensor,
   setDate,
-  setData,
-}: SelectTimeButtonsProps) {
+  modelData,
+}: {
+  now: Date;
+  setDate: React.Dispatch<React.SetStateAction<{ start: Date; end: Date }>>;
+  modelData: {
+    refetch: () => void;
+  };
+}) {
   return (
     <div className="flex justify-end space-x-2">
       <Button
@@ -238,19 +249,13 @@ export function SelectTimeButtons({
       >
         Last 3 Hours
       </Button>
-            <Button
+      <Button
         variant="outline"
         onClick={() => setDate({ end: now, start: subHours(now, 1) })}
       >
         Last 1 Hour
       </Button>
-      <Button
-        onClick={() =>
-          setData(generateData(date.start, date.end, selectedSensor))
-        }
-      >
-        Refresh Data
-      </Button>
+      <Button onClick={() => modelData.refetch()}>Refresh Data</Button>
     </div>
   );
 }
