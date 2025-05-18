@@ -219,11 +219,11 @@ export function SensorPicker({
 }
 
 export function SelectTimeButtons({
-  now,
+  date,
   setDate,
   modelData,
 }: {
-  now: Date;
+  date: { start: Date; end: Date };
   setDate: React.Dispatch<React.SetStateAction<{ start: Date; end: Date }>>;
   modelData: {
     refetch: () => void;
@@ -233,25 +233,25 @@ export function SelectTimeButtons({
     <div className="flex justify-end space-x-2">
       <Button
         variant="outline"
-        onClick={() => setDate({ end: now, start: subHours(now, 24) })}
+        onClick={() => setDate( { end: date.start, start: subHours(date.start, 24) })}
       >
         Last 24 Hours
       </Button>
       <Button
         variant="outline"
-        onClick={() => setDate({ end: now, start: subHours(now, 6) })}
+        onClick={() => setDate({ end: date.start, start: subHours(date.start, 6) })}
       >
         Last 6 Hours
       </Button>
       <Button
         variant="outline"
-        onClick={() => setDate({ end: now, start: subHours(now, 3) })}
+        onClick={() => setDate({ end: date.start, start: subHours(date.start, 3) })}
       >
         Last 3 Hours
       </Button>
       <Button
         variant="outline"
-        onClick={() => setDate({ end: now, start: subHours(now, 1) })}
+        onClick={() => setDate({ end: date.start, start: subHours(date.start, 1) })}
       >
         Last 1 Hour
       </Button>
