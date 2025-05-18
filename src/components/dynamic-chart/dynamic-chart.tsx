@@ -120,16 +120,8 @@ export function DynamicLineChart() {
               cursor={false}
               content={
                 <ChartTooltipContent
-                  indicator="dot"
-                  formatter={(value) => {
-                    const sensor = SENSOR_COLUMNS.find(
-                      (s) => s.id === selectedSensor
-                    );
-                    return [
-                      value,
-                      ` ${sensor?.name} (${getSensorUnit(sensor?.id || "")})`,
-                    ];
-                  }}
+                  indicator="line"
+                  labelKey={selectedSensor}
                 />
               }
             />
