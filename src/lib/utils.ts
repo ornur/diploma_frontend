@@ -4,21 +4,36 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export const generateData = (
+
+export type GenerateData2 = {
+  sensorName: string;
+  data: {
+    timestamp: Date;
+    predicted_value: number;
+    real_value: number;
+  }[];
+  message: string;
+};
+
+export const generateData2 = (
   start: Date,
   end: Date,
   selectedSensor: string
-): { [key: string]: number | Date }[] => {
-  const data: { [key: string]: Date | number }[] = [];
+): GenerateData2 => {
+  const generatedData: GenerateData2 = {
+    sensorName: selectedSensor,
+    data: [],
+    message: "",
+  };
+
   const timeRange = end.getTime() - start.getTime();
   const dataPoints = 30;
   const interval = timeRange / (dataPoints - 1);
 
   for (let i = 0; i < dataPoints; i++) {
     const timestamp = new Date(start.getTime() + i * interval);
-    const dataPoint: { [key: string]: Date | number } = { timestamp };
-
     let baseValue = 0;
+
     switch (selectedSensor) {
       case "temp":
         baseValue = 22 + 3 * Math.sin(i / 5);
@@ -38,13 +53,12 @@ export const generateData = (
     }
 
     // Add real and predicted values with some variation
-    dataPoint[`${selectedSensor}_real`] = Math.round(
-      baseValue + (Math.random() - 0.5) * 5
-    );
-    dataPoint[`${selectedSensor}_predicted`] = Math.round(
-      baseValue + (Math.random() - 0.5) * 10
-    );
-    data.push(dataPoint);
+    generatedData.data.push({
+      timestamp,
+      predicted_value: Math.round(baseValue + (Math.random() - 0.5) * 5),
+      real_value: Math.round(baseValue + (Math.random() - 0.5) * 10),
+    });
   }
-  return data;
+
+  return generatedData;
 };
