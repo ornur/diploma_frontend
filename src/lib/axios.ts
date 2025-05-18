@@ -9,6 +9,7 @@ const getApiUrl = () => {
 const axiosInstance = axios.create({
   baseURL: getApiUrl(),
   headers: { "Content-Type": "application/json" },
+  timeout: 900000,
 });
 
 // Add a request interceptor
