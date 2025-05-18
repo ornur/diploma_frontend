@@ -72,22 +72,53 @@ export function StartDatePicker({
             }
             initialFocus
           />
-          <div className="p-3 border-t border-border">
+          <div className="p-3 border-t border-border flex items-center space-x-2">
+            <label className="text-xs text-muted-foreground">Hour:</label>
             <Select
-              value={date.start?.getHours().toString()}
+              value={
+                date.start
+                  ? date.start.getHours().toString().padStart(2, "0")
+                  : ""
+              }
               onValueChange={(value) => {
+                if (!date.start) return;
                 const newDate = new Date(date.start);
                 newDate.setHours(Number.parseInt(value));
                 setDate({ ...date, start: newDate });
               }}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-20">
                 <SelectValue placeholder="Hour" />
               </SelectTrigger>
               <SelectContent>
                 {Array.from({ length: 24 }, (_, i) => (
-                  <SelectItem key={i} value={i.toString()}>
+                  <SelectItem key={i} value={i.toString().padStart(2, "0")}>
                     {i.toString().padStart(2, "0")}:00
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <label className="text-xs text-muted-foreground">Minute:</label>
+            <Select
+              value={
+                date.start
+                  ? date.start.getMinutes().toString().padStart(2, "0")
+                  : ""
+              }
+              onValueChange={(value) => {
+                if (!date.start) return;
+                const newDate = new Date(date.start);
+                newDate.setMinutes(Number.parseInt(value));
+                setDate({ ...date, start: newDate });
+              }}
+            >
+              <SelectTrigger className="w-20">
+                <SelectValue placeholder="Minute" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from({ length: 60 }, (_, i) => (
+                  <SelectItem key={i} value={i.toString().padStart(2, "0")}>
+                    {i.toString().padStart(2, "0")}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -135,22 +166,51 @@ export function EndDatePicker({
             }
             initialFocus
           />
-          <div className="p-3 border-t border-border">
+          <div className="p-3 border-t border-border flex items-center space-x-2">
+            <label className="text-xs text-muted-foreground">Hour:</label>
             <Select
-              value={date.end?.getHours().toString()}
+              value={
+                date.end ? date.end.getHours().toString().padStart(2, "0") : ""
+              }
               onValueChange={(value) => {
+                if (!date.end) return;
                 const newDate = new Date(date.end);
                 newDate.setHours(Number.parseInt(value));
                 setDate({ ...date, end: newDate });
               }}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-20">
                 <SelectValue placeholder="Hour" />
               </SelectTrigger>
               <SelectContent>
                 {Array.from({ length: 24 }, (_, i) => (
-                  <SelectItem key={i} value={i.toString()}>
+                  <SelectItem key={i} value={i.toString().padStart(2, "0")}>
                     {i.toString().padStart(2, "0")}:00
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <label className="text-xs text-muted-foreground">Minute:</label>
+            <Select
+              value={
+                date.end
+                  ? date.end.getMinutes().toString().padStart(2, "0")
+                  : ""
+              }
+              onValueChange={(value) => {
+                if (!date.end) return;
+                const newDate = new Date(date.end);
+                newDate.setMinutes(Number.parseInt(value));
+                setDate({ ...date, end: newDate });
+              }}
+            >
+              <SelectTrigger className="w-20">
+                <SelectValue placeholder="Minute" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from({ length: 60 }, (_, i) => (
+                  <SelectItem key={i} value={i.toString().padStart(2, "0")}>
+                    {i.toString().padStart(2, "0")}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -233,25 +293,33 @@ export function SelectTimeButtons({
     <div className="flex justify-end space-x-2">
       <Button
         variant="outline"
-        onClick={() => setDate( { end: date.start, start: subHours(date.start, 24) })}
+        onClick={() =>
+          setDate({ end: date.start, start: subHours(date.start, 24) })
+        }
       >
         Last 24 Hours
       </Button>
       <Button
         variant="outline"
-        onClick={() => setDate({ end: date.start, start: subHours(date.start, 6) })}
+        onClick={() =>
+          setDate({ end: date.start, start: subHours(date.start, 6) })
+        }
       >
         Last 6 Hours
       </Button>
       <Button
         variant="outline"
-        onClick={() => setDate({ end: date.start, start: subHours(date.start, 3) })}
+        onClick={() =>
+          setDate({ end: date.start, start: subHours(date.start, 3) })
+        }
       >
         Last 3 Hours
       </Button>
       <Button
         variant="outline"
-        onClick={() => setDate({ end: date.start, start: subHours(date.start, 1) })}
+        onClick={() =>
+          setDate({ end: date.start, start: subHours(date.start, 1) })
+        }
       >
         Last 1 Hour
       </Button>
