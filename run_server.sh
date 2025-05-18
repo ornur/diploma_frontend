@@ -4,4 +4,6 @@ set -e
 
 yarn
 
-yarn dev
+yarn run build
+
+yarn run start
