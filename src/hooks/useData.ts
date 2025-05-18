@@ -1,4 +1,4 @@
-import { use, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { generateData2 } from "@/lib/utils";
