@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "@/lib/axios";
+import { generateData2 } from "@/lib/utils";
 
 export type GetData = {
   sensorName: string;
@@ -21,14 +21,7 @@ export function useData() {
 
   const modelData = useQuery({
     queryKey: ["data", date.start, date.end, selectedSensor],
-    //queryFn: () => generateData2(date.start, date.end, selectedSensor),
-    queryFn: () => axiosInstance.get<GetData>(`/api/v1/timeseries/${selectedSensor}`, {
-      params: {
-        start_date: date.start.toISOString(),
-        end_date: date.end.toISOString(),
-      }
-    }),
-    select: data => data.data 
+    queryFn: () => generateData2(date.start, date.end, selectedSensor),
   });
   return { modelData, selectedSensor, setSelectedSensor, date, setDate};
 }
