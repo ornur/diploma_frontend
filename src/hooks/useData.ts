@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { subHours } from "date-fns/subHours";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 
@@ -14,11 +13,10 @@ export type GetData = {
 };
 
 export function useData() {
-  const now = new Date();
   const [selectedSensor, setSelectedSensor] = useState<string>("ActivePower");
   const [date, setDate] = useState<{ start: Date; end: Date }>({
-    start: new Date(2025, 0, 25, 8, 1, 0),
-    end: new Date(2025, 0, 25, 9, 0, 0),
+    start: new Date("2025-02-17T01:00:00Z"),
+    end: new Date("2025-02-17T02:00:00Z"),
   });
 
   const modelData = useQuery({
@@ -32,5 +30,5 @@ export function useData() {
     }),
     select: data => data.data 
   });
-  return { modelData, selectedSensor, setSelectedSensor, date, setDate, now };
+  return { modelData, selectedSensor, setSelectedSensor, date, setDate};
 }
