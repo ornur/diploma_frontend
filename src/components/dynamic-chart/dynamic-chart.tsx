@@ -71,7 +71,7 @@ export function DynamicLineChart() {
       />
       <SelectTimeButtons modelData={modelData} now={now} setDate={setDate} />
 
-      {!modelData.isPending && modelData.isSuccess ? (
+      {modelData.isSuccess ? (
         <ChartContainer
           key={modelData.data?.sensorName}
           config={getChartConfig()}
