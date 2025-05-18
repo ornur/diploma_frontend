@@ -2,7 +2,7 @@ import { useState } from "react";
 import { subHours } from "date-fns/subHours";
 import { useQuery } from "@tanstack/react-query";
 import { generateData2 } from "@/lib/utils";
-import axiosInstance from "@/lib/axios";
+// import axiosInstance from "@/lib/axios";
 
 export type GetData = {
   sensorName: string;
