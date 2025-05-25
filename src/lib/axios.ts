@@ -31,8 +31,6 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
     function (response) {
-      // Do something with the response data
-    //   console.log('Response:', response);
       return response;
     },
     function (error) {

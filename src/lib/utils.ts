@@ -185,7 +185,5 @@ export const generateData2 = (
     });
   }
 
-  console.log(generatedData);
-
   return generatedData;
 };
