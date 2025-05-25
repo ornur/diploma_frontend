@@ -1,16 +1,22 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "@/lib/axios";
 import { generateData2 } from "@/lib/utils";
+import axiosInstance from "@/lib/axios";
 
 export type GetData = {
   sensorName: string;
   data: {
-    timestamp: Date;
+    timestamp: Date | string;
     predicted_value: number;
     real_value: number;
+    status?: "good" | "warning" | "danger"; // Made optional since API might not provide it
   }[];
   message: string;
+  thresholds: {
+    danger: number;
+    warning: number;
+    good: number;
+  };
 };
 
 export function useData() {
@@ -23,15 +29,41 @@ export function useData() {
   const apiData = useQuery({
     queryKey: ["api-data", date.start, date.end, selectedSensor],
     queryFn: async () => {
-      const response = await axiosInstance.get<GetData>(`/api/v1/timeseries/${selectedSensor}`, {
-        params: {
-          start_date: date.start.toISOString(),
-          end_date: date.end.toISOString(),
+      const response = await axiosInstance.get<GetData>(
+        `/api/v1/timeseries/${selectedSensor}`,
+        {
+          params: {
+            start_date: date.start.toISOString(),
+            end_date: date.end.toISOString(),
+          },
         }
-      });
-      return response.data;
+      );
+
+      // Process the API response to ensure proper data structure
+      const processedData = {
+        ...response.data,
+        data: response.data.data.map((item) => ({
+          ...item,
+          timestamp:
+            typeof item.timestamp === "string"
+              ? new Date(item.timestamp)
+              : item.timestamp,
+          // Calculate status if not provided by API
+          status:
+            item.status ||
+            (response.data.thresholds
+              ? item.real_value >= response.data.thresholds.danger
+                ? "danger"
+                : item.real_value >= response.data.thresholds.warning
+                ? "warning"
+                : "good"
+              : "good"),
+        })),
+      };
+
+      return processedData;
     },
-    select: data => data,
+    select: (data) => data,
     retry: 3,
   });
 
@@ -43,17 +75,17 @@ export function useData() {
 
   const modelData = useMemo(() => {
     if (apiData.isError) {
-      console.log("API data error, using generated data", apiData.error);
+      // console.error("API data error, using generated data");
       return generatedData;
     }
     return apiData;
   }, [apiData, generatedData]);
 
-  return { 
-    modelData, 
-    selectedSensor, 
-    setSelectedSensor, 
-    date, 
+  return {
+    modelData,
+    selectedSensor,
+    setSelectedSensor,
+    date,
     setDate,
   };
 }
