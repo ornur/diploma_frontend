@@ -93,3 +93,16 @@ export const getSensorColor = (sensorId: string, isPredicted: boolean) => {
     (isPredicted ? "hsl(var(--chart-1))" : "hsl(var(--chart-2))")
   );
 };
+
+export const getStatusColor = (status: "good" | "warning" | "danger") => {
+  switch (status) {
+    case "danger":
+      return "rgb(239, 68, 68)"; // red-500
+    case "warning":
+      return "rgb(245, 158, 11)"; // amber-500
+    case "good":
+      return "rgb(34, 197, 94)"; // green-500
+    default:
+      return "rgb(107, 114, 128)"; // gray-500
+  }
+};
