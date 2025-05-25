@@ -97,12 +97,12 @@ export const getSensorColor = (sensorId: string, isPredicted: boolean) => {
 export const getStatusColor = (status: "good" | "warning" | "danger") => {
   switch (status) {
     case "danger":
-      return "rgb(239, 68, 68)"; // red-500
+      return "rgb(239, 68, 68)";
     case "warning":
-      return "rgb(245, 158, 11)"; // amber-500
+      return "rgb(245, 158, 11)";
     case "good":
-      return "rgb(34, 197, 94)"; // green-500
+      return "rgb(34, 197, 94)";
     default:
-      return "rgb(107, 114, 128)"; // gray-500
+      return "rgb(107, 114, 128)";
   }
 };

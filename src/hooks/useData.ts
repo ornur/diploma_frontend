@@ -9,7 +9,7 @@ export type GetData = {
     timestamp: Date | string;
     predicted_value: number;
     real_value: number;
-    status?: "good" | "warning" | "danger"; // Made optional since API might not provide it
+    status?: "good" | "warning" | "danger";
   }[];
   message: string;
   thresholds: {
@@ -39,7 +39,7 @@ export function useData() {
         }
       );
 
-      // Process the API response to ensure proper data structure
+
       const processedData = {
         ...response.data,
         data: response.data.data.map((item) => ({
@@ -48,7 +48,6 @@ export function useData() {
             typeof item.timestamp === "string"
               ? new Date(item.timestamp)
               : item.timestamp,
-          // Calculate status if not provided by API
           status:
             item.status ||
             (response.data.thresholds
@@ -75,7 +74,6 @@ export function useData() {
 
   const modelData = useMemo(() => {
     if (apiData.isError) {
-      // console.error("API data error, using generated data");
       return generatedData;
     }
     return apiData;

@@ -90,7 +90,7 @@ export const generateData2 = (
   for (let i = 0; i < dataPoints; i++) {
     const timestamp = new Date(start.getTime() + i * interval);
     let baseValue = 0;
-    const sensorType = selectedSensor.replace(/[ABC]$/, ""); // Remove A/B/C suffix
+    const sensorType = selectedSensor.replace(/[ABC]$/, "");
     const phaseValue = selectedSensor.endsWith("A")
       ? 0
       : selectedSensor.endsWith("B")
