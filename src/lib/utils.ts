@@ -161,23 +161,6 @@ export const generateData2 = (
     const predictedValue = Math.round(baseValue + (Math.random() - 0.5) * 5);
     const realValue = Math.round(baseValue + (Math.random() - 0.5) * 10);
 
-    let status: "good" | "warning" | "danger" = "good";
-
-    const timeBasedVariation = Math.sin(i / 3) * 10;
-    const adjustedValue = realValue + timeBasedVariation;
-
-    if (adjustedValue >= sensorThresholds.danger) {
-      status = "danger";
-    } else if (adjustedValue >= sensorThresholds.warning) {
-      status = "warning";
-    }
-
-    if (i >= 10 && i <= 15) {
-      status = "danger";
-    } else if (i >= 20 && i <= 22) {
-      status = "warning";
-    }
-
     generatedData.data.push({
       timestamp,
       predicted_value: predictedValue,
