@@ -55,14 +55,6 @@ export function useChartData({
       // Calculate percentage deviation between actual and predicted
       const deviationPercent = calculatePercentageDeviation(predicted, actual);
 
-      // Determine zone color based on deviation
-      let zoneColor = "rgba(0, 255, 0, 0.2)"; // Green (good)
-      if (deviationPercent > warningDeviationPercent) {
-        zoneColor = "rgba(255, 0, 0, 0.2)"; // Red (critical)
-      } else if (deviationPercent > goodDeviationPercent) {
-        zoneColor = "rgba(255, 238, 0, 0.2)"; // Yellow (warning)
-      }
-
       // Calculate reference bounds around predicted value for visualization
       const goodDeviation = Math.abs(predicted * (goodDeviationPercent / 100));
       const warningDeviation = Math.abs(
@@ -73,18 +65,13 @@ export function useChartData({
         timestamp,
         predicted_value: predicted,
         real_value: actual,
-        good_bound: [
-          actual - goodDeviation,
-          actual + goodDeviation,
-        ],
-        warning_bound: [
-          actual - warningDeviation,
-          actual + warningDeviation,
-        ],
-        zone_color: zoneColor,
         deviation_percent: deviationPercent,
-        chart_min_y: minY,
-        chart_max_y: maxY,
+        good_bound: [actual - goodDeviation, actual + goodDeviation],
+        warning_bound: [actual - warningDeviation, actual + warningDeviation],
+        chart_y: [
+          Math.min(minY),
+          Math.max(maxY),
+        ],
       };
     });
   }, [sensorData.data, yAxisDomain]);
