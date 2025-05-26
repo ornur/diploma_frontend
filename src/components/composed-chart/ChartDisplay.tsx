@@ -86,35 +86,6 @@ const CustomLegend = ({ payload }: any) => {
   );
 };
 
-// Custom component to render dynamic background zones
-const DynamicBackgroundZones = ({ data, yAxisDomain }: any) => {
-  if (!data || data.length === 0) return null;
-
-  return (
-    <g>
-      {data.map((item: any, index: number) => {
-        const nextItem = data[index + 1];
-        const x = item.timestamp;
-        const width = nextItem ? nextItem.timestamp - item.timestamp : 3600000; // 1 hour default
-        const y = yAxisDomain[0];
-        const height = yAxisDomain[1] - yAxisDomain[0];
-
-        return (
-          <rect
-            key={`zone-${index}`}
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            fill={item.zone_color}
-            style={{ pointerEvents: "none" }}
-          />
-        );
-      })}
-    </g>
-  );
-};
-
 export function ChartDisplay({
   sensorData,
   selectedSensor,
@@ -167,8 +138,11 @@ export function ChartDisplay({
           bottom: 60,
         }}
       >
-
-        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          fill="rgb(255, 0, 0, 0.04)"
+          vertical={false}
+        />
 
         <XAxis
           dataKey="timestamp"
@@ -201,30 +175,6 @@ export function ChartDisplay({
 
         <ChartTooltip content={<CustomTooltip />} />
 
-        {/* Dynamic background zones based on actual deviation */}
-        {chartData.map((item, index) => {
-          const nextItem = chartData[index + 1];
-          const x = item.timestamp;
-          const width = nextItem
-            ? nextItem.timestamp - item.timestamp
-            : 3600000; // 1 hour default
-          const y = yAxisDomain[0];
-          const height = yAxisDomain[1] - yAxisDomain[0];
-
-          return (
-            <rect
-              key={`zone-${index}`}
-              x={x}
-              y={y}
-              width={width}
-              height={height}
-              fill={item.zone_color}
-              style={{ pointerEvents: "none" }}
-            />
-          );
-        })}
-
-        {/* Reference lines for thresholds around predicted values */}
         <Area
           type="monotone"
           dataKey="good_bound"
@@ -241,9 +191,9 @@ export function ChartDisplay({
         <Area
           type="monotone"
           dataKey="warning_bound"
-          stroke="rgba(255, 238, 0, 0.7)"
+          stroke="rgba(255, 238, 0, 1)"
           strokeWidth={1}
-          strokeDasharray="5 2"
+          strokeDasharray="5 7"
           fill="rgba(255, 238, 0, 0.1)"
           yAxisId={selectedSensor}
           dot={false}
@@ -251,7 +201,6 @@ export function ChartDisplay({
           connectNulls
         />
 
-        {/* Data Lines */}
         <Line
           type="monotone"
           dataKey="predicted_value"
