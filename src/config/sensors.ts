@@ -47,13 +47,12 @@ export const SENSOR_COLUMNS: readonly SensorColumn[] = [
 
 // Percentage-based thresholds for all sensors
 export const PERCENTAGE_THRESHOLDS = {
-  goodDeviationPercent: 5, // ±5% is considered good
-  warningDeviationPercent: 15, // ±15% is considered warning
-  // Beyond 15% is critical
+  goodDeviationPercent: 15,
+  warningDeviationPercent: 30,
 } as const
 
 export const DEVIATION_TOLERANCES: Record<string, SensorThresholds> = {
-  ActivePower: { maxGoodDeviation: 10, maxWarningDeviation: 25 },
+  ActivePower: { maxGoodDeviation: 5, maxWarningDeviation: 12.5 },
   ReactivePower: { maxGoodDeviation: 8, maxWarningDeviation: 20 },
   MetalOutputIntensity: { maxGoodDeviation: 15, maxWarningDeviation: 35 },
   PowerSetpoint: { maxGoodDeviation: 20, maxWarningDeviation: 40 },
