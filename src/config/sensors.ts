@@ -1,0 +1,74 @@
+import type { SensorColumn, SensorThresholds } from "@/types/sensor"
+
+export const SENSOR_COLUMNS: readonly SensorColumn[] = [
+  { id: "ActivePower", name: "Active Power", unit: "kW" },
+  { id: "ReactivePower", name: "Reactive Power", unit: "kVAR" },
+  { id: "MetalOutputIntensity", name: "Metal Output Intensity", unit: "A" },
+  { id: "PowerSetpoint", name: "Power Setpoint", unit: "kW" },
+  { id: "FurnacePodTemparature", name: "Furnace Pod Temperature", unit: "°C" },
+  { id: "FurnaceBathTemperature", name: "Furnace Bath Temperature", unit: "°C" },
+  { id: "ReleaseAmountA", name: "Release Amount A", unit: "kg" },
+  { id: "ReleaseAmountB", name: "Release Amount B", unit: "kg" },
+  { id: "ReleaseAmountC", name: "Release Amount C", unit: "kg" },
+  { id: "UpperRingRaiseA", name: "Upper Ring Raise A", unit: "mm" },
+  { id: "UpperRingRaiseB", name: "Upper Ring Raise B", unit: "mm" },
+  { id: "UpperRingRaiseC", name: "Upper Ring Raise C", unit: "mm" },
+  { id: "UpperRingReleaseA", name: "Upper Ring Release A", unit: "mm" },
+  { id: "UpperRingReleaseB", name: "Upper Ring Release B", unit: "mm" },
+  { id: "UpperRingReleaseC", name: "Upper Ring Release C", unit: "mm" },
+  { id: "GasPressureUnderFurnaceA", name: "Gas Pressure Under Furnace A", unit: "kPa" },
+  { id: "GasPressureUnderFurnaceB", name: "Gas Pressure Under Furnace B", unit: "kPa" },
+  { id: "GasPressureUnderFurnaceC", name: "Gas Pressure Under Furnace C", unit: "kPa" },
+  { id: "PowerA", name: "Power A", unit: "kW" },
+  { id: "PowerB", name: "Power B", unit: "kW" },
+  { id: "PowerC", name: "Power C", unit: "kW" },
+  { id: "HighVoltageA", name: "High Voltage A", unit: "V" },
+  { id: "HighVoltageB", name: "High Voltage B", unit: "V" },
+  { id: "HighVoltageC", name: "High Voltage C", unit: "V" },
+  { id: "LowerRingReleaseA", name: "Lower Ring Release A", unit: "mm" },
+  { id: "LowerRingReleaseB", name: "Lower Ring Release B", unit: "mm" },
+  { id: "LowerRingReleaseC", name: "Lower Ring Release C", unit: "mm" },
+  { id: "VentialtionValveForMantelA", name: "Ventilation Valve For Mantel A", unit: "%" },
+  { id: "VentialtionValveForMantelB", name: "Ventilation Valve For Mantel B", unit: "%" },
+  { id: "VentialtionValveForMantelC", name: "Ventilation Valve For Mantel C", unit: "%" },
+  { id: "VoltageStepA", name: "Voltage Step A", unit: "step" },
+  { id: "VoltageStepB", name: "Voltage Step B", unit: "step" },
+  { id: "VoltageStepC", name: "Voltage Step C", unit: "step" },
+  { id: "CurrentHolderPositionA", name: "Current Holder Position A", unit: "mm" },
+  { id: "CurrentHolderPositionB", name: "Current Holder Position B", unit: "mm" },
+  { id: "CurrentHolderPositionC", name: "Current Holder Position C", unit: "mm" },
+  { id: "HolderModeA", name: "Holder Mode A", unit: "" },
+  { id: "HolderModeB", name: "Holder Mode B", unit: "" },
+  { id: "HolderModeC", name: "Holder Mode C", unit: "" },
+  { id: "AirTemperatureMantelA", name: "Air Temperature Mantel A", unit: "°C" },
+  { id: "AirTemperatureMantelB", name: "Air Temperature Mantel B", unit: "°C" },
+  { id: "AirTemperatureMantelC", name: "Air Temperature Mantel C", unit: "°C" },
+] as const
+
+// Percentage-based thresholds for all sensors
+export const PERCENTAGE_THRESHOLDS = {
+  goodDeviationPercent: 5, // ±5% is considered good
+  warningDeviationPercent: 15, // ±15% is considered warning
+  // Beyond 15% is critical
+} as const
+
+export const DEVIATION_TOLERANCES: Record<string, SensorThresholds> = {
+  ActivePower: { maxGoodDeviation: 10, maxWarningDeviation: 25 },
+  ReactivePower: { maxGoodDeviation: 8, maxWarningDeviation: 20 },
+  MetalOutputIntensity: { maxGoodDeviation: 15, maxWarningDeviation: 35 },
+  PowerSetpoint: { maxGoodDeviation: 20, maxWarningDeviation: 40 },
+  FurnacePodTemparature: { maxGoodDeviation: 2, maxWarningDeviation: 5 },
+  FurnaceBathTemperature: { maxGoodDeviation: 3, maxWarningDeviation: 7 },
+  ReleaseAmount: { maxGoodDeviation: 4, maxWarningDeviation: 10 },
+  UpperRingRaise: { maxGoodDeviation: 1, maxWarningDeviation: 3 },
+  UpperRingRelease: { maxGoodDeviation: 1, maxWarningDeviation: 2 },
+  GasPressureUnderFurnace: { maxGoodDeviation: 5, maxWarningDeviation: 15 },
+  Power: { maxGoodDeviation: 12, maxWarningDeviation: 30 },
+  HighVoltage: { maxGoodDeviation: 15, maxWarningDeviation: 30 },
+  LowerRingRelease: { maxGoodDeviation: 1, maxWarningDeviation: 2 },
+  VentialtionValveForMantel: { maxGoodDeviation: 5, maxWarningDeviation: 15 },
+  VoltageStep: { maxGoodDeviation: 1, maxWarningDeviation: 3 },
+  CurrentHolderPosition: { maxGoodDeviation: 2, maxWarningDeviation: 5 },
+  HolderMode: { maxGoodDeviation: 0.5, maxWarningDeviation: 1.5 },
+  AirTemperatureMantel: { maxGoodDeviation: 2, maxWarningDeviation: 6 },
+}
