@@ -17,64 +17,69 @@ import {
   calculatePercentageDeviation,
 } from "@/lib/chart-utils";
 import { SENSOR_COLUMNS, PERCENTAGE_THRESHOLDS } from "@/config/sensors";
+import { CustomLegendProps, CustomTooltipProps } from "@/types/chart";
 
 interface ChartDisplayProps {
   sensorData: UseQueryResult<SensorData>;
   selectedSensor: string;
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    const predictedData = payload.find(
-      (p: any) => p.dataKey === "predicted_value"
-    );
-    const actualData = payload.find((p: any) => p.dataKey === "real_value");
-
-    if (predictedData && actualData) {
-      const deviationPercent = calculatePercentageDeviation(
-        predictedData.value,
-        actualData.value
-      );
-      const { goodDeviationPercent, warningDeviationPercent } =
-        PERCENTAGE_THRESHOLDS;
-
-      let zoneStatus = "Good";
-      if (deviationPercent > warningDeviationPercent) {
-        zoneStatus = "Critical";
-      } else if (deviationPercent > goodDeviationPercent) {
-        zoneStatus = "Warning";
-      }
-
-      return (
-        <div className="bg-background border border-border rounded-lg p-3 shadow-md">
-          <p className="text-sm font-medium mb-2">
-            {format(new Date(label), "PPP HH:mm")}
-          </p>
-          <p className="text-sm" style={{ color: predictedData.color }}>
-            Predicted: {predictedData.value?.toFixed(2)}
-          </p>
-          <p className="text-sm" style={{ color: actualData.color }}>
-            Actual: {actualData.value?.toFixed(2)}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Deviation: {deviationPercent.toFixed(1)}% ({zoneStatus})
-          </p>
-        </div>
-      );
-    }
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+  if (!active || !payload || payload.length === 0 || !label) {
+    return null;
   }
-  return null;
+
+  const predictedData = payload.find((p) => p.dataKey === "predicted_value");
+  const actualData = payload.find((p) => p.dataKey === "real_value");
+
+  if (!predictedData || !actualData) {
+    return null;
+  }
+
+  const deviationPercent = calculatePercentageDeviation(
+    predictedData.value,
+    actualData.value
+  );
+  const { goodDeviationPercent, warningDeviationPercent } =
+    PERCENTAGE_THRESHOLDS;
+
+  let zoneStatus: "Good" | "Warning" | "Critical" = "Good";
+  if (deviationPercent > warningDeviationPercent) {
+    zoneStatus = "Critical";
+  } else if (deviationPercent > goodDeviationPercent) {
+    zoneStatus = "Warning";
+  }
+
+  const timestamp =
+    typeof label === "string" ? label : new Date(label).toISOString();
+
+  return (
+    <div className="bg-background border border-border rounded-lg p-3 shadow-md">
+      <p className="text-sm font-medium mb-2">
+        {format(new Date(timestamp), "PPP HH:mm")}
+      </p>
+      <p className="text-sm" style={{ color: predictedData.color }}>
+        Predicted: {predictedData.value.toFixed(2)}
+      </p>
+      <p className="text-sm" style={{ color: actualData.color }}>
+        Actual: {actualData.value.toFixed(2)}
+      </p>
+      <p className="text-xs text-muted-foreground mt-1">
+        Deviation: {deviationPercent.toFixed(1)}% ({zoneStatus})
+      </p>
+    </div>
+  );
 };
 
-const CustomLegend = ({ payload }: any) => {
+const CustomLegend = ({ payload }: CustomLegendProps) => {
   const filteredPayload = payload?.filter(
-    (item: any) =>
+    (item) =>
       item.dataKey === "predicted_value" || item.dataKey === "real_value"
   );
 
   return (
     <div className="flex justify-center space-x-6 mt-4">
-      {filteredPayload?.map((entry: any) => (
+      {filteredPayload?.map((entry) => (
         <div key={entry.dataKey} className="flex items-center space-x-2">
           <div className="w-3 h-0.5" style={{ backgroundColor: entry.color }} />
           <span className="text-sm">
