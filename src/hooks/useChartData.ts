@@ -52,10 +52,8 @@ export function useChartData({
       const predicted = item.predicted_value;
       const actual = item.real_value;
 
-      // Calculate percentage deviation between actual and predicted
       const deviationPercent = calculatePercentageDeviation(predicted, actual);
 
-      // Calculate reference bounds around predicted value for visualization
       const goodDeviation = Math.abs(predicted * (goodDeviationPercent / 100));
       const warningDeviation = Math.abs(
         predicted * (warningDeviationPercent / 100)

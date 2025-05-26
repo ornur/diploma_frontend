@@ -45,7 +45,6 @@ export const SENSOR_COLUMNS: readonly SensorColumn[] = [
   { id: "AirTemperatureMantelC", name: "Air Temperature Mantel C", unit: "°C" },
 ] as const
 
-// Percentage-based thresholds for all sensors
 export const PERCENTAGE_THRESHOLDS = {
   goodDeviationPercent: 15,
   warningDeviationPercent: 30,

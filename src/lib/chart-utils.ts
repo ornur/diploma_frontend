@@ -100,11 +100,11 @@ export function getPercentageZoneColor(deviationPercent: number): string {
     PERCENTAGE_THRESHOLDS;
 
   if (deviationPercent <= goodDeviationPercent) {
-    return "rgba(0, 255, 0, 0.3)"; // Green
+    return "rgba(0, 255, 0, 0.3)";
   } else if (deviationPercent <= warningDeviationPercent) {
-    return "rgba(255, 238, 0, 0.3)"; // Yellow
+    return "rgba(255, 238, 0, 0.3)";
   } else {
-    return "rgba(255, 0, 0, 0.3)"; // Red
+    return "rgba(255, 0, 0, 0.3)";
   }
 }
 
