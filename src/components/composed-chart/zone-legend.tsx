@@ -24,7 +24,7 @@ export function ZoneLegend() {
   ];
 
   return (
-    <Card className="w-full">
+    <Card className="w-full shadow-none">
       <CardHeader>
         <CardTitle className="text-sm font-medium">Zone Information</CardTitle>
         <p className="text-xs text-muted-foreground">
