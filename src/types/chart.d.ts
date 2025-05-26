@@ -1,13 +1,11 @@
 export interface ChartDataPoint {
-  timestamp: number
-  predicted_value: number
-  real_value: number
-  good_bound: number[]
-  warning_bound: number[]
-  zone_color: string
-  deviation_percent: number
-  chart_min_y: number
-  chart_max_y: number
+  timestamp: number;
+  predicted_value: number;
+  real_value: number;
+  good_bound: number[];
+  warning_bound: number[];
+  deviation_percent: number;
+  chart_y: number[];
 }
 
 export interface ChartConfig {
