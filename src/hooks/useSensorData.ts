@@ -4,7 +4,7 @@ import { generateSensorData } from "@/lib/data-generator";
 import type { DateRange } from "@/types/sensor";
 
 export function useSensorData() {
-  const [selectedSensor, setSelectedSensor] = useState<string>("ActivePower");
+  const [selectedSensor, setSelectedSensor] = useState<string>("CurrentHolderPositionA");
   const [dateRange, setDateRange] = useState<DateRange>({
     start: new Date("2025-02-17T01:00:00Z"),
     end: new Date("2025-02-17T02:00:00Z"),
